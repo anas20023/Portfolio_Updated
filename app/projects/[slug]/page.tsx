@@ -1,0 +1,46 @@
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { projects, getProject } from '@/data/projects';
+import { ProjectDetail } from '@/components/projects/ProjectDetail';
+
+export function generateStaticParams() {
+  return projects.map((p) => ({ slug: p.slug }));
+}
+
+export function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Metadata {
+  const project = getProject(params.slug);
+  if (!project) return { title: 'Project Not Found' };
+  return {
+    title: project.title,
+    description: project.summary,
+    openGraph: {
+      title: project.title,
+      description: project.summary,
+      images: [project.coverImage],
+    },
+  };
+}
+
+export default function ProjectPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const project = getProject(params.slug);
+  if (!project) notFound();
+
+  const related = projects
+    .filter((p) => p.slug !== project.slug)
+    .sort((a, b) => {
+      const aMatch = a.category === project.category ? 0 : 1;
+      const bMatch = b.category === project.category ? 0 : 1;
+      return aMatch - bMatch;
+    })
+    .slice(0, 3);
+
+  return <ProjectDetail project={project} related={related} />;
+}
