@@ -62,7 +62,25 @@ export const services: Service[] = [
 
 export const leadership: LeadershipItem[] = [
   {
-    title: 'ICPC Volunteer',
+    title: 'BUBT IT CLUB',
+    role: 'Joint General Secretery',
+    description:
+      'Coordinated media coverage and logistics for regional ICPC events.',
+  },
+  {
+    title: 'ICPC Regional Volunteer',
+    role: 'Media & Event Management',
+    description:
+      'Coordinated media coverage and logistics for regional ICPC events.',
+  },
+  {
+    title: 'NHSPC Volunteer',
+    role: 'Techncal Team Management',
+    description:
+      'Coordinated media coverage and logistics for regional ICPC events.',
+  },
+  {
+    title: 'ICPC West Continent Volunteer',
     role: 'Media & Event Management',
     description:
       'Coordinated media coverage and logistics for regional ICPC events.',

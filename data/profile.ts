@@ -14,7 +14,7 @@ export const profile: Profile = {
   currentFocus: 'Building scalable Next.js apps and sharpening competitive programming skills.',
   email: 'anasibnebelal400@gmail.com',
   phone: '',
-  resumeUrl: '/resume/Anas-Ibn-Belal-Resume.pdf',
+  resumeUrl: '/resume/Anas_Ibn_Belal_Jr_Software_Engineer.pdf',
   image: 'https://i.ibb.co.com/8LBCVCJH/formal-croped.png',
   techBadges: ['Next.js', 'Node.js', 'C++', 'MongoDB', 'Competitive Programming'],
   stats: {

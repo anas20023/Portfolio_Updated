@@ -117,13 +117,13 @@ export function Hero() {
               animate="show"
               className="mt-8 flex flex-wrap items-center gap-3"
             >
-              <a
+              <Link
                 href={profile.resumeUrl}
                 className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
               >
                 <Download className="h-4 w-4" aria-hidden="true" />
                 Download Resume
-              </a>
+              </Link>
               <Link
                 href="#contact"
                 className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-foreground backdrop-blur transition-all hover:border-primary/50 hover:text-primary"
