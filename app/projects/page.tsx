@@ -13,13 +13,13 @@ export default function ProjectsPage() {
     <div className="pt-24">
       <section className="py-12 sm:py-16">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <span className="mb-3 inline-block font-mono text-xs uppercase tracking-[0.2em] text-primary">
+          <span className="mb-3 inline-block font-mono text-xs uppercase tracking-[0.2em] text-accent">
             Portfolio
           </span>
           <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl">
             All Projects
           </h1>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted sm:text-lg">
             Full-stack web apps, REST APIs, and platforms built with Next.js,
             Node.js, Express, and MongoDB.
           </p>

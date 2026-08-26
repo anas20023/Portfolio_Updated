@@ -64,11 +64,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${jetbrains.variable}`}>
+    // HeroUI's :root palette is light and this site has only ever existed in
+    // dark, so ship this phase pinned to dark: every visual difference is then
+    // attributable to HeroUI rather than to a palette flip. Phase 5 replaces
+    // this literal with next-themes and does the light-mode design pass.
+    <html
+      lang="en"
+      className={`dark ${jakarta.variable} ${jetbrains.variable}`}
+    >
       <body className="font-sans antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-accent-foreground"
         >
           Skip to content
         </a>

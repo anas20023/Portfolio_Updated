@@ -17,14 +17,14 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-3">
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/15 font-mono text-sm font-bold text-primary ring-1 ring-primary/30">
+              <span className="grid h-9 w-9 place-items-center rounded-lg bg-accent/15 font-mono text-sm font-bold text-accent ring-1 ring-accent/30">
                 AB
               </span>
               <span className="text-sm font-semibold text-foreground">
                 {profile.name}
               </span>
             </Link>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
               {profile.bio}
             </p>
           </div>
@@ -36,7 +36,7 @@ export function Footer() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-primary"
+                    className="text-sm text-muted transition-colors hover:text-accent"
                   >
                     {item.label}
                   </Link>
@@ -55,28 +55,28 @@ export function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="grid h-9 w-9 place-items-center rounded-md border border-border text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+                  className="grid h-9 w-9 place-items-center rounded-md border border-border text-muted transition-colors hover:border-accent/50 hover:text-accent"
                 >
                   <Icon className="h-4 w-4" aria-hidden="true" />
                 </a>
               ))}
             </div>
-            <p className="mt-4 text-sm text-muted-foreground">
+            <p className="mt-4 text-sm text-muted">
               {profile.location}
             </p>
           </div>
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 sm:flex-row">
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted">
             © {new Date().getFullYear()} {profile.name}. All rights reserved.
           </p>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-muted">
             Built with Next.js & Tailwind CSS
           </p>
           <a
             href="#main"
-            className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:border-primary/50 hover:text-primary"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border px-3 py-1.5 text-xs font-medium text-muted transition-colors hover:border-accent/50 hover:text-accent"
           >
             <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
             Back to top

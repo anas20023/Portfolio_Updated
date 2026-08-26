@@ -76,7 +76,7 @@ export function Navbar() {
           className="group flex items-center gap-2"
           aria-label={`${profile.name} home`}
         >
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/15 font-mono text-sm font-bold text-primary ring-1 ring-primary/30 transition group-hover:bg-primary/25">
+          <span className="grid h-9 w-9 place-items-center rounded-lg bg-accent/15 font-mono text-sm font-bold text-accent ring-1 ring-accent/30 transition group-hover:bg-accent/25">
             AB
           </span>
           <span className="hidden text-sm font-semibold tracking-tight text-foreground sm:block">
@@ -96,14 +96,14 @@ export function Navbar() {
                     'relative rounded-md px-3 py-2 text-sm font-medium transition-colors',
                     isActive
                       ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                      : 'text-muted hover:text-foreground'
                   )}
                 >
                   {item.label}
                   {isActive && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute inset-x-2 -bottom-px h-px bg-primary"
+                      className="absolute inset-x-2 -bottom-px h-px bg-accent"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -122,7 +122,7 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="grid h-9 w-9 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="grid h-9 w-9 place-items-center rounded-md text-muted transition-colors hover:bg-default hover:text-foreground"
               >
                 <Icon className="h-4 w-4" aria-hidden="true" />
               </a>
@@ -130,7 +130,7 @@ export function Navbar() {
           </div>
           <a
             href={profile.resumeUrl}
-            className="hidden items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:inline-flex"
+            className="hidden items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 sm:inline-flex"
           >
             <Download className="h-4 w-4" aria-hidden="true" />
             Resume
@@ -140,7 +140,7 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
             aria-expanded={open}
-            className="grid h-9 w-9 place-items-center rounded-md text-foreground transition-colors hover:bg-secondary lg:hidden"
+            className="grid h-9 w-9 place-items-center rounded-md text-foreground transition-colors hover:bg-default lg:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -161,7 +161,7 @@ export function Navbar() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="block rounded-md px-3 py-2.5 text-base font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                    className="block rounded-md px-3 py-2.5 text-base font-medium text-muted transition-colors hover:bg-default hover:text-foreground"
                   >
                     {item.label}
                   </Link>
@@ -170,7 +170,7 @@ export function Navbar() {
               <li className="pt-2">
                 <a
                   href={profile.resumeUrl}
-                  className="flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
+                  className="flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground"
                 >
                   <Download className="h-4 w-4" aria-hidden="true" />
                   Download Resume

@@ -35,8 +35,8 @@ export function Hero() {
       {/* Subtle geometric background */}
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 grid-bg opacity-30 mask-fade-b" />
-        <div className="absolute -top-24 left-1/2 h-[420px] w-[620px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
-        <div className="absolute right-[10%] top-1/3 h-px w-40 rotate-45 bg-linear-to-r from-transparent via-primary/40 to-transparent" />
+        <div className="absolute -top-24 left-1/2 h-[420px] w-[620px] -translate-x-1/2 rounded-full bg-accent/10 blur-[120px]" />
+        <div className="absolute right-[10%] top-1/3 h-px w-40 rotate-45 bg-linear-to-r from-transparent via-accent/40 to-transparent" />
         <div className="absolute left-[8%] top-1/2 h-24 w-24 rounded-xl border border-border/60" />
         <div className="absolute right-[18%] top-1/4 h-16 w-16 rounded-full border border-border/60" />
       </div>
@@ -49,7 +49,7 @@ export function Hero() {
               custom={0}
               initial="hidden"
               animate="show"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-sm"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-3 py-1.5 text-xs font-medium text-muted backdrop-blur-sm"
             >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -73,7 +73,7 @@ export function Hero() {
               custom={2}
               initial="hidden"
               animate="show"
-              className="mt-4 text-lg font-medium text-primary sm:text-xl"
+              className="mt-4 text-lg font-medium text-accent sm:text-xl"
             >
               {profile.headline}
             </motion.p>
@@ -83,7 +83,7 @@ export function Hero() {
               custom={3}
               initial="hidden"
               animate="show"
-              className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg"
+              className="mt-4 max-w-xl text-pretty text-base leading-relaxed text-muted sm:text-lg"
             >
               {profile.bio}
             </motion.p>
@@ -93,9 +93,9 @@ export function Hero() {
               custom={4}
               initial="hidden"
               animate="show"
-              className="mt-4 flex items-center gap-2 text-sm text-muted-foreground"
+              className="mt-4 flex items-center gap-2 text-sm text-muted"
             >
-              <Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />
+              <Sparkles className="h-4 w-4 text-accent" aria-hidden="true" />
               {profile.currentFocus}
             </motion.p>
 
@@ -104,7 +104,7 @@ export function Hero() {
               custom={5}
               initial="hidden"
               animate="show"
-              className="mt-5 border-l-2 border-primary/60 pl-4 font-mono text-sm italic text-foreground/80"
+              className="mt-5 border-l-2 border-accent/60 pl-4 font-mono text-sm italic text-foreground/80"
             >
               &ldquo;{profile.tagline}&rdquo;
             </motion.blockquote>
@@ -118,14 +118,14 @@ export function Hero() {
             >
               <Link
                 href={profile.resumeUrl}
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                className="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-semibold text-accent-foreground transition-all hover:bg-accent/90 hover:shadow-lg hover:shadow-accent/20"
               >
                 <Download className="h-4 w-4" aria-hidden="true" />
                 Download Resume
               </Link>
               <Link
                 href="#contact"
-                className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-foreground backdrop-blur-sm transition-all hover:border-primary/50 hover:text-primary"
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface/60 px-5 py-3 text-sm font-semibold text-foreground backdrop-blur-sm transition-all hover:border-accent/50 hover:text-accent"
               >
                 Get in touch
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -151,7 +151,7 @@ export function Hero() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={label}
-                    className="grid h-10 w-10 place-items-center rounded-lg border border-border text-muted-foreground transition-all hover:-translate-y-0.5 hover:border-primary/50 hover:text-primary"
+                    className="grid h-10 w-10 place-items-center rounded-lg border border-border text-muted transition-all hover:-translate-y-0.5 hover:border-accent/50 hover:text-accent"
                   >
                     <Icon className="h-4 w-4" aria-hidden="true" />
                   </a>
@@ -167,9 +167,9 @@ export function Hero() {
             transition={{ duration: 0.7, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
             className="relative mx-auto w-full max-w-sm lg:max-w-none"
           >
-            <div className="absolute -inset-4 -z-10 rounded-3xl bg-primary/10 blur-2xl" />
-            <div className="relative overflow-hidden rounded-2xl border border-border bg-card p-2">
-              <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-secondary">
+            <div className="absolute -inset-4 -z-10 rounded-3xl bg-accent/10 blur-2xl" />
+            <div className="relative overflow-hidden rounded-2xl border border-border bg-surface p-2">
+              <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-default">
                 <Image
                   src={profile.image}
                   alt={`${profile.name} — ${profile.headline}`}
@@ -181,9 +181,9 @@ export function Hero() {
                 <div className="absolute inset-0 bg-linear-to-t from-background/60 via-transparent to-transparent" />
               </div>
             </div>
-            <div className="absolute -bottom-4 -left-4 hidden rounded-xl border border-border bg-card/90 px-4 py-3 backdrop-blur-sm sm:block">
+            <div className="absolute -bottom-4 -left-4 hidden rounded-xl border border-border bg-surface/90 px-4 py-3 backdrop-blur-sm sm:block">
               <p className="flex items-center gap-2 text-xs font-medium text-foreground">
-                <MapPin className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
+                <MapPin className="h-3.5 w-3.5 text-accent" aria-hidden="true" />
                 {profile.location}
               </p>
             </div>
@@ -201,10 +201,10 @@ export function Hero() {
           {stats.map((s) => (
             <div
               key={s.label}
-              className="rounded-xl border border-border bg-card/60 p-5 text-center backdrop-blur-sm"
+              className="rounded-xl border border-border bg-surface/60 p-5 text-center backdrop-blur-sm"
             >
-              <p className="text-2xl font-bold text-primary sm:text-3xl">{s.value}</p>
-              <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              <p className="text-2xl font-bold text-accent sm:text-3xl">{s.value}</p>
+              <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted">
                 {s.label}
               </p>
             </div>

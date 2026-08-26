@@ -1,124 +1,89 @@
-@import 'tailwindcss';
+/* HeroUI ships its own `@import "tailwindcss"` (plus the
+   `@layer theme, base, components, utilities` declaration), so importing it here
+   is the ONLY Tailwind entry point. Adding a second `@import "tailwindcss"`
+   would duplicate preflight and — worse — move the effective Tailwind import
+   into node_modules, where automatic source detection is disabled. The failure
+   signature is HeroUI's own CSS looking fine while every utility class in this
+   app silently disappears. */
+@import '@heroui/styles';
 
-/* Explicit source globs. Automatic detection would find these too, but naming
-   them keeps utility generation working once the Tailwind import moves into
-   node_modules (HeroUI ships its own `@import "tailwindcss"`), where automatic
-   detection is disabled. */
+/* Required, not optional: with the Tailwind import living in node_modules,
+   these globs are the only thing telling Tailwind where our classes are. */
 @source '../app/**/*.{ts,tsx}';
 @source '../components/**/*.{ts,tsx}';
 @source '../lib/**/*.{ts,tsx}';
 
-/* v4's `dark:` defaults to prefers-color-scheme; the theme switcher is
-   class-based, so point the variant at the class instead. */
-@custom-variant dark (&:where(.dark, .dark *));
-
 @theme {
+  /* HeroUI defines no font families, and tailwind.config.ts is gone, so
+     font-sans / font-mono (10 sites) would otherwise fall back to the stock
+     stack. */
   --font-sans: var(--font-jakarta), system-ui, sans-serif;
   --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-card: hsl(var(--card));
-  --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
-  --color-accent: hsl(var(--accent));
-  --color-accent-foreground: hsl(var(--accent-foreground));
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
+  /* HeroUI derives its whole radius scale from --radius
+     (xl = --radius * 1.5, 2xl = * 2, 3xl = * 3). This project's Tailwind 3
+     scale had xl/2xl/3xl hardcoded at 0.75/1/1.5rem and only lg/md derived, so
+     pinning --radius alone would inflate every card corner by 50%.
 
-  /* xl/2xl/3xl intentionally left at v4 defaults — they already match the
-     values this project rendered under v3 (0.75/1/1.5rem). */
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-sm: calc(var(--radius) - 4px);
+     Deliberately literal rather than calc(var(--radius) ...): whose --radius
+     wins is a cascade question (ours is unlayered, HeroUI's is in @layer theme,
+     so ours should) and a wrong value here silently reshapes every card on the
+     site. Literals make the rendered scale independent of that question. */
+  --radius-md: calc(0.75rem - 2px);
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+}
+
+/* HeroUI ships --radius: 0.5rem in @layer theme; ours is 0.75rem. Unlayered, so
+   it wins regardless of import order. The utility scale above no longer depends
+   on this, but HeroUI's own derived tokens do (--radius-field, which its form
+   controls use), so it still needs to be ours. */
+:root {
+  --radius: 0.75rem;
 }
 
 @layer base {
-  :root {
-    --background: 222 47% 5%;
-    --foreground: 213 31% 94%;
-    --card: 217 33% 10%;
-    --card-foreground: 213 31% 94%;
-    --popover: 222 47% 7%;
-    --popover-foreground: 213 31% 94%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 213 31% 94%;
-    --muted: 217 33% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 215 28% 35%;
-    --accent-foreground: 213 31% 94%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 217 91% 60%;
-    --radius: 0.75rem;
-  }
-
-  /* v4 preflight defaults border-color to currentColor; v3 defaulted it to a
-     palette gray, which this project overrode globally. Kept in `base` so
-     component libraries in the `components` layer still win. */
-  *,
-  ::before,
-  ::after {
-    border-color: var(--color-border);
-  }
-
   html {
     scroll-behavior: smooth;
   }
 
   body {
-    background-color: hsl(var(--background));
-    color: hsl(var(--foreground));
+    background-color: var(--background);
+    color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   ::selection {
-    background-color: hsl(var(--primary) / 0.3);
-    color: hsl(var(--foreground));
+    background-color: color-mix(in oklab, var(--accent) 30%, transparent);
+    color: var(--foreground);
   }
 }
 
+/* HeroUI's tokens are complete oklch() colors, not the HSL triplets these
+   utilities used to interpolate, so `hsl(var(--border) / 0.4)` would now be
+   invalid CSS and get dropped silently — taking the backdrop off both hero
+   sections with it. color-mix is the equivalent that survives. */
 @utility grid-bg {
   background-image:
-    linear-gradient(to right, hsl(var(--border) / 0.4) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--border) / 0.4) 1px, transparent 1px);
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--border) 40%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--border) 40%, transparent) 1px,
+      transparent 1px
+    );
   background-size: 56px 56px;
 }
 
 @utility mask-fade-b {
   -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
   mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.6);
 }
 
 @media (prefers-reduced-motion: reduce) {

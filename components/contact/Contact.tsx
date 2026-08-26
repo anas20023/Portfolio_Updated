@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm, type Control } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { motion } from 'framer-motion';
@@ -11,13 +11,16 @@ import {
   Send,
   CheckCircle2,
 } from 'lucide-react';
+import {
+  Button,
+  FieldError,
+  Input,
+  Label,
+  TextArea,
+  TextField,
+} from '@heroui/react';
 import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons';
 import { profile } from '@/data/profile';
-import { siteConfig } from '@/lib/constants';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
 
 const schema = z.object({
   name: z.string().min(2, 'Please enter your name'),
@@ -55,14 +58,72 @@ const contactItems = [
   },
 ];
 
+/**
+ * TextField hands `onChange` a string rather than an event, so react-hook-form's
+ * `register()` is incompatible and `Controller` is required. React Aria earns
+ * that cost: it wires id / aria-labelledby / aria-describedby / aria-invalid
+ * across Label, Input and FieldError, so the validation message is actually
+ * announced. The markup this replaced rendered bare <p> errors with no id and
+ * no aria-describedby, leaving screen readers with aria-invalid and no reason.
+ */
+function ContactField({
+  control,
+  name,
+  label,
+  placeholder,
+  type,
+  rows,
+}: {
+  control: Control<FormValues>;
+  name: keyof FormValues;
+  label: string;
+  placeholder: string;
+  type?: 'text' | 'email';
+  rows?: number;
+}) {
+  return (
+    <Controller
+      control={control}
+      name={name}
+      render={({ field, fieldState }) => (
+        <TextField
+          name={field.name}
+          value={field.value}
+          onChange={field.onChange}
+          onBlur={field.onBlur}
+          isInvalid={fieldState.invalid}
+          // RAC defaults to `native` inside a <form>, which races the browser's
+          // own validation bubbles against the Zod messages.
+          validationBehavior="aria"
+          type={rows ? undefined : type}
+          className="flex flex-col gap-2"
+        >
+          <Label>{label}</Label>
+          {rows ? (
+            <TextArea ref={field.ref} rows={rows} placeholder={placeholder} />
+          ) : (
+            <Input ref={field.ref} placeholder={placeholder} />
+          )}
+          <FieldError>{fieldState.error?.message}</FieldError>
+        </TextField>
+      )}
+    />
+  );
+}
+
 export function Contact() {
   const [submitted, setSubmitted] = useState(false);
   const {
-    register,
+    control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
-  } = useForm<FormValues>({ resolver: zodResolver(schema) });
+    formState: { isSubmitting },
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    // RAC reads `value={undefined}` as uncontrolled: a controlled/uncontrolled
+    // warning, and a field that won't clear on reset().
+    defaultValues: { name: '', email: '', subject: '', message: '' },
+  });
 
   const onSubmit = async (_data: FormValues) => {
     await new Promise((r) => setTimeout(r, 700));
@@ -81,13 +142,13 @@ export function Contact() {
           transition={{ duration: 0.5, ease: 'easeOut' }}
           className="mb-12 max-w-2xl"
         >
-          <span className="mb-3 inline-block font-mono text-xs uppercase tracking-[0.2em] text-primary">
+          <span className="mb-3 inline-block font-mono text-xs uppercase tracking-[0.2em] text-accent">
             11 — Contact
           </span>
           <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]">
             Let&apos;s build something
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+          <p className="mt-4 text-base leading-relaxed text-muted sm:text-lg">
             Have a project, role, or idea in mind? I&apos;d love to hear about it.
           </p>
         </motion.div>
@@ -98,16 +159,16 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
-            className="space-y-3"
+            className="flex flex-col gap-3"
           >
             {contactItems.map(({ label, value, href, Icon }) => {
               const inner = (
-                <div className="flex items-center gap-4 rounded-xl border border-border bg-card p-4 transition-all hover:border-primary/40">
-                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-primary/15 text-primary ring-1 ring-primary/25">
+                <div className="flex items-center gap-4 rounded-xl border border-border bg-surface p-4 transition-all hover:border-accent/40">
+                  <span className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-accent/15 text-accent ring-1 ring-accent/25">
                     <Icon className="h-5 w-5" aria-hidden="true" />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <p className="text-xs font-medium uppercase tracking-wide text-muted">
                       {label}
                     </p>
                     <p className="truncate text-sm font-medium text-foreground">
@@ -137,67 +198,47 @@ export function Contact() {
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, ease: 'easeOut' }}
             onSubmit={handleSubmit(onSubmit)}
-            className="rounded-2xl border border-border bg-card p-6 sm:p-8"
+            className="rounded-2xl border border-border bg-surface p-6 sm:p-8"
             noValidate
           >
             <div className="grid gap-5 sm:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  placeholder="Your name"
-                  aria-invalid={!!errors.name}
-                  {...register('name')}
-                />
-                {errors.name && (
-                  <p className="text-xs text-destructive">{errors.name.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  aria-invalid={!!errors.email}
-                  {...register('email')}
-                />
-                {errors.email && (
-                  <p className="text-xs text-destructive">{errors.email.message}</p>
-                )}
-              </div>
-            </div>
-            <div className="mt-5 space-y-2">
-              <Label htmlFor="subject">Subject</Label>
-              <Input
-                id="subject"
-                placeholder="What's this about?"
-                aria-invalid={!!errors.subject}
-                {...register('subject')}
+              <ContactField
+                control={control}
+                name="name"
+                label="Name"
+                placeholder="Your name"
               />
-              {errors.subject && (
-                <p className="text-xs text-destructive">{errors.subject.message}</p>
-              )}
+              <ContactField
+                control={control}
+                name="email"
+                label="Email"
+                type="email"
+                placeholder="you@example.com"
+              />
             </div>
-            <div className="mt-5 space-y-2">
-              <Label htmlFor="message">Message</Label>
-              <Textarea
-                id="message"
+            <div className="mt-5 flex flex-col gap-5">
+              <ContactField
+                control={control}
+                name="subject"
+                label="Subject"
+                placeholder="What's this about?"
+              />
+              <ContactField
+                control={control}
+                name="message"
+                label="Message"
                 rows={5}
                 placeholder="Tell me about your project or opportunity..."
-                aria-invalid={!!errors.message}
-                {...register('message')}
               />
-              {errors.message && (
-                <p className="text-xs text-destructive">{errors.message.message}</p>
-              )}
             </div>
 
             <div className="mt-6 flex items-center gap-4">
               <Button
                 type="submit"
-                disabled={isSubmitting}
-                className="gap-2 rounded-lg bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20"
+                variant="primary"
+                size="lg"
+                isDisabled={isSubmitting}
+                className="gap-2"
               >
                 <Send className="h-4 w-4" aria-hidden="true" />
                 {isSubmitting ? 'Sending...' : 'Send message'}
@@ -206,14 +247,14 @@ export function Contact() {
                 <motion.p
                   initial={{ opacity: 0, y: 4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="flex items-center gap-1.5 text-sm font-medium text-emerald-500"
+                  className="flex items-center gap-1.5 text-sm font-medium text-success"
                 >
                   <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
                   Thanks! I&apos;ll be in touch soon.
                 </motion.p>
               )}
             </div>
-            <p className="mt-4 text-xs text-muted-foreground">
+            <p className="mt-4 text-xs text-muted">
               This is a demo form — messages aren&apos;t sent yet.
             </p>
           </motion.form>
