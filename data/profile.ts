@@ -15,7 +15,7 @@ export const profile: Profile = {
   email: 'anasibnebelal400@gmail.com',
   phone: '',
   resumeUrl: '/resume/Anas_Ibn_Belal_Jr_Software_Engineer.pdf',
-  image: 'https://i.ibb.co.com/8LBCVCJH/formal-croped.png',
+  image: 'https://i.ibb.co.com/HfnjnzdR/SKN04151.jpg',
   techBadges: ['Next.js', 'Node.js', 'C++', 'MongoDB', 'Competitive Programming'],
   stats: {
     problemsSolved: '1000+',
