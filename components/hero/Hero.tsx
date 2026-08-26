@@ -36,7 +36,7 @@ export function Hero() {
       <div className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute inset-0 grid-bg opacity-30 mask-fade-b" />
         <div className="absolute -top-24 left-1/2 h-[420px] w-[620px] -translate-x-1/2 rounded-full bg-primary/10 blur-[120px]" />
-        <div className="absolute right-[10%] top-1/3 h-px w-40 rotate-45 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
+        <div className="absolute right-[10%] top-1/3 h-px w-40 rotate-45 bg-linear-to-r from-transparent via-primary/40 to-transparent" />
         <div className="absolute left-[8%] top-1/2 h-24 w-24 rounded-xl border border-border/60" />
         <div className="absolute right-[18%] top-1/4 h-16 w-16 rounded-full border border-border/60" />
       </div>
@@ -49,7 +49,7 @@ export function Hero() {
               custom={0}
               initial="hidden"
               animate="show"
-              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card/60 px-3 py-1.5 text-xs font-medium text-muted-foreground backdrop-blur-sm"
             >
               <span className="relative flex h-2 w-2">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
@@ -125,7 +125,7 @@ export function Hero() {
               </Link>
               <Link
                 href="#contact"
-                className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-foreground backdrop-blur transition-all hover:border-primary/50 hover:text-primary"
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-card/60 px-5 py-3 text-sm font-semibold text-foreground backdrop-blur-sm transition-all hover:border-primary/50 hover:text-primary"
               >
                 Get in touch
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -178,10 +178,10 @@ export function Hero() {
                   sizes="(min-width: 1024px) 480px, 100vw"
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-background/60 via-transparent to-transparent" />
               </div>
             </div>
-            <div className="absolute -bottom-4 -left-4 hidden rounded-xl border border-border bg-card/90 px-4 py-3 backdrop-blur sm:block">
+            <div className="absolute -bottom-4 -left-4 hidden rounded-xl border border-border bg-card/90 px-4 py-3 backdrop-blur-sm sm:block">
               <p className="flex items-center gap-2 text-xs font-medium text-foreground">
                 <MapPin className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
                 {profile.location}
@@ -201,7 +201,7 @@ export function Hero() {
           {stats.map((s) => (
             <div
               key={s.label}
-              className="rounded-xl border border-border bg-card/60 p-5 text-center backdrop-blur"
+              className="rounded-xl border border-border bg-card/60 p-5 text-center backdrop-blur-sm"
             >
               <p className="text-2xl font-bold text-primary sm:text-3xl">{s.value}</p>
               <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">

@@ -25,13 +25,13 @@ export function ProjectCard({ project }: { project: Project }) {
           sizes="(min-width: 1024px) 560px, 100vw"
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-card via-card/20 to-transparent" />
         <div className="absolute left-4 top-4 flex flex-wrap gap-2">
-          <Badge className="border-none bg-background/80 text-foreground backdrop-blur">
+          <Badge className="border-none bg-background/80 text-foreground backdrop-blur-sm">
             {project.category}
           </Badge>
           {project.featured && (
-            <Badge className="border-none bg-primary text-primary-foreground backdrop-blur">
+            <Badge className="border-none bg-primary text-primary-foreground backdrop-blur-sm">
               Featured
             </Badge>
           )}
@@ -43,7 +43,7 @@ export function ProjectCard({ project }: { project: Project }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${project.title} GitHub`}
-              className="grid h-9 w-9 place-items-center rounded-lg bg-background/80 text-foreground backdrop-blur transition-colors hover:text-primary"
+              className="grid h-9 w-9 place-items-center rounded-lg bg-background/80 text-foreground backdrop-blur-sm transition-colors hover:text-primary"
             >
               <GithubIcon className="h-4 w-4" aria-hidden="true" />
             </a>
@@ -54,7 +54,7 @@ export function ProjectCard({ project }: { project: Project }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${project.title} live demo`}
-              className="grid h-9 w-9 place-items-center rounded-lg bg-background/80 text-foreground backdrop-blur transition-colors hover:text-primary"
+              className="grid h-9 w-9 place-items-center rounded-lg bg-background/80 text-foreground backdrop-blur-sm transition-colors hover:text-primary"
             >
               <ExternalLink className="h-4 w-4" aria-hidden="true" />
             </a>
