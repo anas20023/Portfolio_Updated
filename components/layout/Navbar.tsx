@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Download, Mail } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons';
+import { ThemeSwitcher } from '@/components/layout/ThemeSwitcher';
 import { siteConfig } from '@/lib/constants';
 import { profile } from '@/data/profile';
 import { cn } from '@/lib/utils';
@@ -114,6 +115,7 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <ThemeSwitcher />
           <div className="hidden items-center gap-1 sm:flex">
             {socials.map(({ label, href, Icon }) => (
               <a

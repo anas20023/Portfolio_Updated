@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { profile } from '@/data/profile';
@@ -64,26 +65,37 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // HeroUI's :root palette is light and this site has only ever existed in
-    // dark, so ship this phase pinned to dark: every visual difference is then
-    // attributable to HeroUI rather than to a palette flip. Phase 5 replaces
-    // this literal with next-themes and does the light-mode design pass.
+    // suppressHydrationWarning is required, not defensive: next-themes' blocking
+    // script mutates this element's class before React hydrates, so the server
+    // HTML and the DOM React finds will always disagree here. It suppresses one
+    // level only — the rest of the tree still warns normally.
     <html
       lang="en"
-      className={`dark ${jakarta.variable} ${jetbrains.variable}`}
+      className={`${jakarta.variable} ${jetbrains.variable}`}
+      suppressHydrationWarning
     >
       <body className="font-sans antialiased">
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-accent-foreground"
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          /* Navbar links and every card carry transition-colors / transition-all,
+             so without this a toggle animates every colour in the viewport at
+             once — a visible half-second smear rather than a switch. */
+          disableTransitionOnChange
         >
-          Skip to content
-        </a>
-        <Navbar />
-        <main id="main" className="min-h-screen">
-          {children}
-        </main>
-        <Footer />
+          <a
+            href="#main"
+            className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-accent-foreground"
+          >
+            Skip to content
+          </a>
+          <Navbar />
+          <main id="main" className="min-h-screen">
+            {children}
+          </main>
+          <Footer />
+        </ThemeProvider>
       </body>
     </html>
   );
