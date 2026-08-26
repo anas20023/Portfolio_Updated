@@ -8,6 +8,7 @@ import { CompetitiveProgramming } from '@/components/achievements/CompetitivePro
 import { Leadership } from '@/components/leadership/Leadership';
 import { Contact } from '@/components/contact/Contact';
 import { featuredProjects } from '@/data/projects';
+import Script from 'next/script';
 
 export default function Home() {
   return (
@@ -21,6 +22,12 @@ export default function Home() {
       <CompetitiveProgramming />
       <Leadership />
       <Contact />
+      <Script
+        id="tawk-to"
+        src="https://embed.tawk.to/6a8ee09ab56df5344af1eedd/1k0v1qnag"
+        strategy="afterInteractive"
+        crossOrigin="anonymous"
+      />
     </>
   );
 }

@@ -12,23 +12,23 @@ export function CompetitiveProgramming() {
     >
       <div className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <Reveal>
-          <div className="h-full rounded-2xl border border-border bg-card p-8 text-center">
-            <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-primary/15 text-primary ring-1 ring-primary/25">
+          <div className="h-full rounded-2xl border border-border bg-surface p-8 text-center">
+            <span className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-accent/15 text-accent ring-1 ring-accent/25">
               <Code2 className="h-7 w-7" aria-hidden="true" />
             </span>
-            <p className="mt-6 text-5xl font-bold text-primary">
+            <p className="mt-6 text-5xl font-bold text-accent">
               {competitiveProgramming.solved}
             </p>
-            <p className="mt-2 text-sm font-medium text-muted-foreground">
+            <p className="mt-2 text-sm font-medium text-muted">
               Problems Solved on {competitiveProgramming.platform}
             </p>
           </div>
         </Reveal>
 
         <Reveal delay={0.06}>
-          <div className="h-full rounded-2xl border border-border bg-card p-8">
+          <div className="h-full rounded-2xl border border-border bg-surface p-8">
             <div className="flex items-center gap-2">
-              <Trophy className="h-5 w-5 text-primary" aria-hidden="true" />
+              <Trophy className="h-5 w-5 text-accent" aria-hidden="true" />
               <h3 className="text-lg font-semibold text-foreground">
                 Notable Results
               </h3>
@@ -39,7 +39,7 @@ export function CompetitiveProgramming() {
                   key={a}
                   className="flex items-start gap-3 rounded-xl border border-border/60 bg-background/40 p-4"
                 >
-                  <Target className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                  <Target className="mt-0.5 h-4 w-4 shrink-0 text-accent" aria-hidden="true" />
                   <span className="text-sm font-medium text-foreground">{a}</span>
                 </li>
               ))}
