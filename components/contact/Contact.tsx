@@ -7,12 +7,11 @@ import { z } from 'zod';
 import { motion } from 'framer-motion';
 import {
   Mail,
-  Github,
-  Linkedin,
   MapPin,
   Send,
   CheckCircle2,
 } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons';
 import { profile } from '@/data/profile';
 import { siteConfig } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
@@ -40,13 +39,13 @@ const contactItems = [
     label: 'GitHub',
     value: 'github.com/anas20023',
     href: profile.github,
-    Icon: Github,
+    Icon: GithubIcon,
   },
   {
     label: 'LinkedIn',
     value: 'linkedin.com/in/anasibelal004',
     href: profile.linkedin,
-    Icon: Linkedin,
+    Icon: LinkedinIcon,
   },
   {
     label: 'Location',

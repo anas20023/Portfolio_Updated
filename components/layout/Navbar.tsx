@@ -4,14 +4,15 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Download, Github, Linkedin, Mail } from 'lucide-react';
+import { Menu, X, Download, Mail } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons';
 import { siteConfig } from '@/lib/constants';
 import { profile } from '@/data/profile';
 import { cn } from '@/lib/utils';
 
 const socials = [
-  { label: 'GitHub', href: siteConfig.social.github, Icon: Github },
-  { label: 'LinkedIn', href: siteConfig.social.linkedin, Icon: Linkedin },
+  { label: 'GitHub', href: siteConfig.social.github, Icon: GithubIcon },
+  { label: 'LinkedIn', href: siteConfig.social.linkedin, Icon: LinkedinIcon },
   { label: 'Email', href: siteConfig.social.email, Icon: Mail },
 ];
 
@@ -29,15 +30,16 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
+  // Close the mobile menu whenever the route changes. Adjusted during render
+  // rather than in an effect so it doesn't trigger a cascading re-render.
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
-    if (!onHome) {
-      setActive('');
-      return;
-    }
+    if (!onHome) return;
     const ids = siteConfig.navItems
       .map((n) => n.href.replace('#', ''))
       .filter((id) => !id.startsWith('/'));

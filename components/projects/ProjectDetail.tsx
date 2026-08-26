@@ -6,7 +6,6 @@ import { motion } from 'framer-motion';
 import {
   ArrowLeft,
   ArrowUpRight,
-  Github,
   ExternalLink,
   CalendarDays,
   CircleDot,
@@ -15,6 +14,7 @@ import {
   AlertTriangle,
   Target,
 } from 'lucide-react';
+import { GithubIcon } from '@/components/shared/BrandIcons';
 import type { Project } from '@/data/types';
 import { Badge } from '@/components/ui/badge';
 import { ProjectCard } from '@/components/projects/ProjectCard';
@@ -116,7 +116,7 @@ export function ProjectDetail({
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/50 hover:text-primary"
                   >
-                    <Github className="h-4 w-4" aria-hidden="true" />
+                    <GithubIcon className="h-4 w-4" aria-hidden="true" />
                     GitHub
                   </a>
                 )}

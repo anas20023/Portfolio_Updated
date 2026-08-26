@@ -3,7 +3,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Github, ExternalLink, ArrowRight } from 'lucide-react';
+import { ArrowUpRight, ExternalLink, ArrowRight } from 'lucide-react';
+import { GithubIcon } from '@/components/shared/BrandIcons';
 import type { Project } from '@/data/types';
 import { Badge } from '@/components/ui/badge';
 
@@ -44,7 +45,7 @@ export function ProjectCard({ project }: { project: Project }) {
               aria-label={`${project.title} GitHub`}
               className="grid h-9 w-9 place-items-center rounded-lg bg-background/80 text-foreground backdrop-blur transition-colors hover:text-primary"
             >
-              <Github className="h-4 w-4" aria-hidden="true" />
+              <GithubIcon className="h-4 w-4" aria-hidden="true" />
             </a>
           )}
           {project.links.live && (

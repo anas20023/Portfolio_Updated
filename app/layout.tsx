@@ -5,6 +5,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { profile } from '@/data/profile';
 import { skills } from '@/data/projects';
+import { siteConfig } from '@/lib/constants';
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ['latin'],
@@ -19,7 +20,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://portfolio.example.com'),
+  metadataBase: new URL(siteConfig.url),
   title: {
     default: `${profile.name} — ${profile.title}`,
     template: `%s — ${profile.name}`,

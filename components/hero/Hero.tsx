@@ -5,12 +5,11 @@ import Link from 'next/link';
 import {
   ArrowRight,
   Download,
-  Github,
-  Linkedin,
   Mail,
   Sparkles,
   MapPin,
 } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons';
 import Image from 'next/image';
 import { profile } from '@/data/profile';
 
@@ -142,8 +141,8 @@ export function Hero() {
             >
               <div className="flex items-center gap-1.5">
                 {[
-                  { label: 'GitHub', href: profile.github, Icon: Github },
-                  { label: 'LinkedIn', href: profile.linkedin, Icon: Linkedin },
+                  { label: 'GitHub', href: profile.github, Icon: GithubIcon },
+                  { label: 'LinkedIn', href: profile.linkedin, Icon: LinkedinIcon },
                   { label: 'Email', href: `mailto:${profile.email}`, Icon: Mail },
                 ].map(({ label, href, Icon }) => (
                   <a
