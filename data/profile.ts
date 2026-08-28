@@ -18,10 +18,10 @@ export const profile: Profile = {
   image: 'https://i.ibb.co.com/HfnjnzdR/SKN04151.jpg',
   techBadges: ['Next.js', 'Node.js', 'C++', 'MongoDB', 'Competitive Programming'],
   stats: {
-    problemsSolved: '1000+',
-    githubRepos: '160+',
-    githubStars: '135+',
-    cgpa: '3.87',
+    problemsSolved: 1000,
+    githubRepos: 160,
+    githubStars: 135,
+    projects: 30,
   },
   quickFacts: [
     { label: 'Location', value: 'Dhaka, Bangladesh' },

@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import CountUp from 'react-countup';
+
 import {
   ArrowRight,
   Download,
@@ -26,7 +28,7 @@ const stats = [
   { label: 'Problems Solved', value: profile.stats.problemsSolved },
   { label: 'GitHub Repos', value: profile.stats.githubRepos },
   { label: 'GitHub Stars', value: profile.stats.githubStars },
-  { label: 'CGPA', value: profile.stats.cgpa },
+  { label: 'Projects', value: profile.stats.projects },
 ];
 
 export function Hero() {
@@ -203,7 +205,11 @@ export function Hero() {
               key={s.label}
               className="rounded-xl border border-border bg-surface/60 p-5 text-center backdrop-blur-sm"
             >
-              <p className="text-2xl font-bold text-accent sm:text-3xl">{s.value}</p>
+              <p className="text-2xl font-bold text-accent sm:text-3xl">
+                {/* {s.value} */}
+                <CountUp start={0} suffix='+' duration={4}
+                  end={s.value} />
+              </p>
               <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted">
                 {s.label}
               </p>
