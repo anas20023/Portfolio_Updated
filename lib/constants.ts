@@ -3,13 +3,11 @@ export const siteConfig = {
   shortName: 'Anas',
   url: 'https://anasibnbelal.dev',
   description:
-    'Aspiring Software Engineer building scalable web applications and solving complex algorithmic problems.',
+    'Software Engineer & Algorithmic Problem Solver building scalable web applications and solving complex algorithmic challenges.',
   navItems: [
-    { label: 'About', href: '#about' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Projects', href: '/projects' },
-    { label: 'Education', href: '#education' },
-    { label: 'CP', href: '#competitive-programming' },
+    { label: 'About & Skills', href: '#about' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'Milestones & CP', href: '#journey' },
     { label: 'Contact', href: '#contact' },
   ],
   social: {
