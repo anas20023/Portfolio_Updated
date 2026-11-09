@@ -1,18 +1,22 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { projects, getProject } from '@/data/projects';
+import { projects } from '@/data/projects';
+import { getProjectBySlug, getAllProjects } from '@/lib/get-projects';
 import { ProjectDetail } from '@/components/projects/ProjectDetail';
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
 
-export function generateMetadata({
+export const revalidate = 60;
+
+export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
-}): Metadata {
-  const project = getProject(params.slug);
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
   if (!project) return { title: 'Project Not Found' };
   return {
     title: project.title,
@@ -20,20 +24,22 @@ export function generateMetadata({
     openGraph: {
       title: project.title,
       description: project.summary,
-      images: [project.coverImage],
+      images: [project.coverImage || project.thumbnail],
     },
   };
 }
 
-export default function ProjectPage({
+export default async function ProjectPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const project = getProject(params.slug);
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
-  const related = projects
+  const allProjects = await getAllProjects();
+  const related = allProjects
     .filter((p) => p.slug !== project.slug)
     .sort((a, b) => {
       const aMatch = a.category === project.category ? 0 : 1;

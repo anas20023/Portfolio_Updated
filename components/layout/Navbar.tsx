@@ -4,14 +4,16 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Download, Github, Linkedin, Mail } from 'lucide-react';
+import { Menu, X, Download, Mail } from 'lucide-react';
+import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons';
+import { ThemeSwitcher } from '@/components/layout/ThemeSwitcher';
 import { siteConfig } from '@/lib/constants';
 import { profile } from '@/data/profile';
 import { cn } from '@/lib/utils';
 
 const socials = [
-  { label: 'GitHub', href: siteConfig.social.github, Icon: Github },
-  { label: 'LinkedIn', href: siteConfig.social.linkedin, Icon: Linkedin },
+  { label: 'GitHub', href: siteConfig.social.github, Icon: GithubIcon },
+  { label: 'LinkedIn', href: siteConfig.social.linkedin, Icon: LinkedinIcon },
   { label: 'Email', href: siteConfig.social.email, Icon: Mail },
 ];
 
@@ -29,15 +31,16 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => {
+  // Close the mobile menu whenever the route changes. Adjusted during render
+  // rather than in an effect so it doesn't trigger a cascading re-render.
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (menuPath !== pathname) {
+    setMenuPath(pathname);
     setOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
-    if (!onHome) {
-      setActive('');
-      return;
-    }
+    if (!onHome) return;
     const ids = siteConfig.navItems
       .map((n) => n.href.replace('#', ''))
       .filter((id) => !id.startsWith('/'));
@@ -74,7 +77,7 @@ export function Navbar() {
           className="group flex items-center gap-2"
           aria-label={`${profile.name} home`}
         >
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary/15 font-mono text-sm font-bold text-primary ring-1 ring-primary/30 transition group-hover:bg-primary/25">
+          <span className="grid h-9 w-9 place-items-center rounded-lg bg-accent/15 font-mono text-sm font-bold text-accent ring-1 ring-accent/30 transition group-hover:bg-accent/25">
             AB
           </span>
           <span className="hidden text-sm font-semibold tracking-tight text-foreground sm:block">
@@ -94,14 +97,14 @@ export function Navbar() {
                     'relative rounded-md px-3 py-2 text-sm font-medium transition-colors',
                     isActive
                       ? 'text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
+                      : 'text-muted hover:text-foreground'
                   )}
                 >
                   {item.label}
                   {isActive && (
                     <motion.span
                       layoutId="nav-active"
-                      className="absolute inset-x-2 -bottom-px h-px bg-primary"
+                      className="absolute inset-x-2 -bottom-px h-px bg-accent"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -112,6 +115,7 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          <ThemeSwitcher />
           <div className="hidden items-center gap-1 sm:flex">
             {socials.map(({ label, href, Icon }) => (
               <a
@@ -120,7 +124,7 @@ export function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="grid h-9 w-9 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                className="grid h-9 w-9 place-items-center rounded-md text-muted transition-colors hover:bg-default hover:text-foreground"
               >
                 <Icon className="h-4 w-4" aria-hidden="true" />
               </a>
@@ -128,7 +132,7 @@ export function Navbar() {
           </div>
           <a
             href={profile.resumeUrl}
-            className="hidden items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:inline-flex"
+            className="hidden items-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-semibold text-accent-foreground transition-colors hover:bg-accent/90 sm:inline-flex"
           >
             <Download className="h-4 w-4" aria-hidden="true" />
             Resume
@@ -138,7 +142,7 @@ export function Navbar() {
             onClick={() => setOpen((v) => !v)}
             aria-label="Toggle menu"
             aria-expanded={open}
-            className="grid h-9 w-9 place-items-center rounded-md text-foreground transition-colors hover:bg-secondary lg:hidden"
+            className="grid h-9 w-9 place-items-center rounded-md text-foreground transition-colors hover:bg-default lg:hidden"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -159,7 +163,7 @@ export function Navbar() {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="block rounded-md px-3 py-2.5 text-base font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                    className="block rounded-md px-3 py-2.5 text-base font-medium text-muted transition-colors hover:bg-default hover:text-foreground"
                   >
                     {item.label}
                   </Link>
@@ -168,7 +172,7 @@ export function Navbar() {
               <li className="pt-2">
                 <a
                   href={profile.resumeUrl}
-                  className="flex items-center gap-2 rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground"
+                  className="flex items-center gap-2 rounded-md bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground"
                 >
                   <Download className="h-4 w-4" aria-hidden="true" />
                   Download Resume

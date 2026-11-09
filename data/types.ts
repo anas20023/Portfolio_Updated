@@ -66,10 +66,10 @@ export type Profile = {
   image: string;
   techBadges: string[];
   stats: {
-    problemsSolved: string;
-    githubRepos: string;
-    githubStars: string;
-    cgpa: string;
+    problemsSolved: number;
+    githubRepos: number;
+    githubStars: number;
+    projects: number;
   };
   quickFacts: { label: string; value: string }[];
   about: {

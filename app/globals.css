@@ -1,86 +1,89 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* HeroUI ships its own `@import "tailwindcss"` (plus the
+   `@layer theme, base, components, utilities` declaration), so importing it here
+   is the ONLY Tailwind entry point. Adding a second `@import "tailwindcss"`
+   would duplicate preflight and — worse — move the effective Tailwind import
+   into node_modules, where automatic source detection is disabled. The failure
+   signature is HeroUI's own CSS looking fine while every utility class in this
+   app silently disappears. */
+@import '@heroui/styles';
 
-@layer base {
-  :root {
-    --background: 222 47% 5%;
-    --foreground: 213 31% 94%;
-    --card: 217 33% 10%;
-    --card-foreground: 213 31% 94%;
-    --popover: 222 47% 7%;
-    --popover-foreground: 213 31% 94%;
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 213 31% 94%;
-    --muted: 217 33% 15%;
-    --muted-foreground: 215 20% 65%;
-    --accent: 215 28% 35%;
-    --accent-foreground: 213 31% 94%;
-    --destructive: 0 72% 51%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 217 33% 18%;
-    --input: 217 33% 18%;
-    --ring: 217 91% 60%;
-    --radius: 0.75rem;
-  }
+/* Required, not optional: with the Tailwind import living in node_modules,
+   these globs are the only thing telling Tailwind where our classes are. */
+@source '../app/**/*.{ts,tsx}';
+@source '../components/**/*.{ts,tsx}';
+@source '../lib/**/*.{ts,tsx}';
+
+@theme {
+  /* HeroUI defines no font families, and tailwind.config.ts is gone, so
+     font-sans / font-mono (10 sites) would otherwise fall back to the stock
+     stack. */
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+
+  /* HeroUI derives its whole radius scale from --radius
+     (xl = --radius * 1.5, 2xl = * 2, 3xl = * 3). This project's Tailwind 3
+     scale had xl/2xl/3xl hardcoded at 0.75/1/1.5rem and only lg/md derived, so
+     pinning --radius alone would inflate every card corner by 50%.
+
+     Deliberately literal rather than calc(var(--radius) ...): whose --radius
+     wins is a cascade question (ours is unlayered, HeroUI's is in @layer theme,
+     so ours should) and a wrong value here silently reshapes every card on the
+     site. Literals make the rendered scale independent of that question. */
+  --radius-md: calc(0.75rem - 2px);
+  --radius-lg: 0.75rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+}
+
+/* HeroUI ships --radius: 0.5rem in @layer theme; ours is 0.75rem. Unlayered, so
+   it wins regardless of import order. The utility scale above no longer depends
+   on this, but HeroUI's own derived tokens do (--radius-field, which its form
+   controls use), so it still needs to be ours. */
+:root {
+  --radius: 0.75rem;
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   html {
     scroll-behavior: smooth;
   }
+
   body {
-    @apply bg-background text-foreground;
+    background-color: var(--background);
+    color: var(--foreground);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
   ::selection {
-    @apply bg-primary/30 text-foreground;
+    background-color: color-mix(in oklab, var(--accent) 30%, transparent);
+    color: var(--foreground);
   }
 }
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-  .text-pretty {
-    text-wrap: pretty;
-  }
-  .grid-bg {
-    background-image:
-      linear-gradient(to right, hsl(var(--border) / 0.4) 1px, transparent 1px),
-      linear-gradient(to bottom, hsl(var(--border) / 0.4) 1px, transparent 1px);
-    background-size: 56px 56px;
-  }
-  .dotted-bg {
-    background-image: radial-gradient(hsl(var(--border) / 0.6) 1px, transparent 1px);
-    background-size: 22px 22px;
-  }
-  .mask-fade-b {
-    -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-    mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
-  }
+/* HeroUI's tokens are complete oklch() colors, not the HSL triplets these
+   utilities used to interpolate, so `hsl(var(--border) / 0.4)` would now be
+   invalid CSS and get dropped silently — taking the backdrop off both hero
+   sections with it. color-mix is the equivalent that survives. */
+@utility grid-bg {
+  background-image:
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--border) 40%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--border) 40%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-::-webkit-scrollbar-track {
-  background: hsl(var(--background));
-}
-::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
-  border-radius: 9999px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.6);
+@utility mask-fade-b {
+  -webkit-mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, black 70%, transparent 100%);
 }
 
 @media (prefers-reduced-motion: reduce) {
