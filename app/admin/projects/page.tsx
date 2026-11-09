@@ -147,7 +147,7 @@ export default function AdminProjectsPage() {
       if (!res.ok) throw new Error(result.error || 'Upload failed');
       setForm((prev) => ({ ...prev, thumbnail: result.url }));
     } catch (err: any) {
-      alert(err.message || 'Cloudinary upload failed. Check credentials in .env');
+      alert(err.message || 'ImageKit upload failed. Check credentials in .env');
     } finally {
       setUploading(false);
     }
@@ -465,10 +465,10 @@ export default function AdminProjectsPage() {
                 />
               </div>
 
-              {/* Thumbnail URL + Cloudinary Upload */}
+              {/* Thumbnail URL + ImageKit Upload */}
               <div>
                 <label className="block text-xs font-medium text-foreground mb-1">
-                  Thumbnail Image (URL or Cloudinary Upload)
+                  Thumbnail Image (URL or ImageKit Upload)
                 </label>
                 <div className="flex gap-2">
                   <input
