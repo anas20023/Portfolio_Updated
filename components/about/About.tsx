@@ -1,9 +1,10 @@
 'use client';
 
 import { Section, Reveal } from '@/components/layout/Section';
-import { profile } from '@/data/profile';
-import { skills } from '@/data/projects';
-import { services } from '@/data/extras';
+import { profile as staticProfile } from '@/data/profile';
+import { skills as staticSkills } from '@/data/projects';
+import { services as staticServices } from '@/data/extras';
+import type { Profile, SkillGroup, Service } from '@/data/types';
 import { Icon } from '@/components/shared/Icon';
 import {
   Code2,
@@ -16,7 +17,15 @@ import {
   CheckCircle2,
 } from 'lucide-react';
 
-export function About() {
+export function About({
+  profile = staticProfile,
+  skills = staticSkills,
+  services = staticServices,
+}: {
+  profile?: Profile;
+  skills?: SkillGroup[];
+  services?: Service[];
+}) {
   return (
     <Section
       id="about"

@@ -1,7 +1,12 @@
 'use client';
 
 import { Section, Reveal } from '@/components/layout/Section';
-import { education, competitiveProgramming, leadership } from '@/data/extras';
+import {
+  education as staticEducation,
+  competitiveProgramming as staticCP,
+  leadership as staticLeadership,
+} from '@/data/extras';
+import type { EducationItem, LeadershipItem, CompetitiveProgramming } from '@/data/types';
 import {
   Trophy,
   Code2,
@@ -13,7 +18,15 @@ import {
   ChevronRight,
 } from 'lucide-react';
 
-export function Experience() {
+export function Experience({
+  education = staticEducation,
+  competitiveProgramming = staticCP,
+  leadership = staticLeadership,
+}: {
+  education?: EducationItem[];
+  competitiveProgramming?: CompetitiveProgramming;
+  leadership?: LeadershipItem[];
+}) {
   return (
     <Section
       id="journey"
@@ -139,13 +152,6 @@ export function Experience() {
                         <p className="mt-1 text-xs font-medium text-accent">
                           {item.institution}
                         </p>
-
-                        {item.cgpa && (
-                          <div className="mt-2 inline-flex items-center gap-1 rounded bg-default px-2 py-0.5 text-[11px] font-semibold text-foreground">
-                            <Award className="h-3 w-3 text-accent" />
-                            CGPA {item.cgpa}
-                          </div>
-                        )}
 
                         <ul className="mt-2.5 space-y-1">
                           {item.highlights.map((h) => (

@@ -2,8 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Plus_Jakarta_Sans, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
-import { Navbar } from '@/components/layout/Navbar';
-import { Footer } from '@/components/layout/Footer';
+import { AppShell } from '@/components/layout/AppShell';
 import { profile } from '@/data/profile';
 import { skills } from '@/data/projects';
 import { siteConfig } from '@/lib/constants';
@@ -40,6 +39,9 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: profile.name }],
   creator: profile.name,
+  alternates: {
+    canonical: '/',
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -47,15 +49,32 @@ export const metadata: Metadata = {
     title: `${profile.name} — ${profile.title}`,
     description: profile.summary,
     siteName: `${profile.name} — Portfolio`,
+    images: [
+      {
+        url: profile.image,
+        width: 1200,
+        height: 630,
+        alt: `${profile.name} — ${profile.title}`,
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: `${profile.name} — ${profile.title}`,
     description: profile.summary,
+    images: [profile.image],
+    creator: '@anas20023',
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
@@ -90,11 +109,27 @@ export default function RootLayout({
           >
             Skip to content
           </a>
-          <Navbar />
-          <main id="main" className="min-h-screen">
-            {children}
-          </main>
-          <Footer />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                '@context': 'https://schema.org',
+                '@type': 'Person',
+                name: profile.name,
+                jobTitle: profile.title,
+                description: profile.summary,
+                url: siteConfig.url,
+                image: profile.image,
+                sameAs: [profile.github, profile.linkedin].filter(Boolean),
+                knowsAbout: skills.flatMap((g) => g.items),
+                address: {
+                  '@type': 'PostalAddress',
+                  addressLocality: profile.location,
+                },
+              }),
+            }}
+          />
+          <AppShell>{children}</AppShell>
         </ThemeProvider>
       </body>
     </html>

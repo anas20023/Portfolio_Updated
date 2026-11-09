@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { projects, getProject } from '@/data/projects';
+import { projects } from '@/data/projects';
+import { getProjectBySlug, getAllProjects } from '@/lib/get-projects';
 import { ProjectDetail } from '@/components/projects/ProjectDetail';
 
 export function generateStaticParams() {
   return projects.map((p) => ({ slug: p.slug }));
 }
+
+export const revalidate = 60;
 
 export async function generateMetadata({
   params,
@@ -13,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return { title: 'Project Not Found' };
   return {
     title: project.title,
@@ -21,7 +24,7 @@ export async function generateMetadata({
     openGraph: {
       title: project.title,
       description: project.summary,
-      images: [project.coverImage],
+      images: [project.coverImage || project.thumbnail],
     },
   };
 }
@@ -32,10 +35,11 @@ export default async function ProjectPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = getProject(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
-  const related = projects
+  const allProjects = await getAllProjects();
+  const related = allProjects
     .filter((p) => p.slug !== project.slug)
     .sort((a, b) => {
       const aMatch = a.category === project.category ? 0 : 1;
