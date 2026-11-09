@@ -14,7 +14,8 @@ import {
   GraduationCap,
 } from 'lucide-react';
 import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons';
-import { profile } from '@/data/profile';
+import { profile as staticProfile } from '@/data/profile';
+import type { Profile } from '@/data/types';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 16 },
@@ -25,7 +26,7 @@ const fadeUp = {
   }),
 };
 
-export function Hero() {
+export function Hero({ profile = staticProfile }: { profile?: Profile }) {
   return (
     <section className="relative overflow-hidden pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-40 lg:pb-28">
       {/* Background architectural grid */}
@@ -152,13 +153,13 @@ export function Hero() {
 
               <div>
                 <p className="flex items-center gap-1 text-xs text-muted">
-                  <GraduationCap className="h-3 w-3 text-accent" />
-                  <span>Academics</span>
+                  <GitBranch className="h-3 w-3 text-accent" />
+                  <span>Projects</span>
                 </p>
                 <p className="mt-1 text-2xl font-bold tracking-tight text-foreground">
-                  3.87
+                  <CountUp start={0} end={profile.stats.projects || 30} suffix="+" duration={2} />
                 </p>
-                <p className="text-[11px] text-muted">CGPA · BUBT CSE</p>
+                <p className="text-[11px] text-muted">Shipped &amp; deployed</p>
               </div>
             </motion.div>
           </div>

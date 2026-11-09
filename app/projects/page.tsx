@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-import { projects } from '@/data/projects';
+import { getAllProjects } from '@/lib/get-projects';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 
 export const metadata: Metadata = {
@@ -10,7 +10,11 @@ export const metadata: Metadata = {
     'A complete collection of full-stack web apps, APIs, and platforms built by Anas Ibn Belal.',
 };
 
-export default function ProjectsPage() {
+export const revalidate = 60;
+
+export default async function ProjectsPage() {
+  const projects = await getAllProjects();
+
   return (
     <div className="pt-24 sm:pt-28">
       <section className="py-12 sm:py-16 border-b border-border">

@@ -19,6 +19,7 @@ import type { Project } from '@/data/types';
 import { Tag } from '@/components/shared/Tag';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { Reveal } from '@/components/layout/Section';
+import { marked } from 'marked';
 
 export function ProjectDetail({
   project,
@@ -63,9 +64,10 @@ export function ProjectDetail({
               <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl">
                 {project.title}
               </h1>
-              <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-                {project.summary}
-              </p>
+              <div
+                className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg prose prose-sm dark:prose-invert [&_a]:text-accent [&_a]:underline [&_strong]:text-foreground"
+                dangerouslySetInnerHTML={{ __html: marked.parse(project.summary || '', { async: false }) as string }}
+              />
 
               <dl className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
                 <div className="rounded-xl border border-border bg-surface p-4">

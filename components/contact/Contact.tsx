@@ -21,7 +21,8 @@ import {
   TextField,
 } from '@heroui/react';
 import { GithubIcon, LinkedinIcon } from '@/components/shared/BrandIcons';
-import { profile } from '@/data/profile';
+import { profile as staticProfile } from '@/data/profile';
+import type { Profile } from '@/data/types';
 
 const schema = z.object({
   name: z.string().min(2, 'Please enter your name'),
@@ -31,37 +32,6 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
-
-const contactItems = [
-  {
-    label: 'Direct Email',
-    value: profile.email,
-    href: `mailto:${profile.email}`,
-    Icon: Mail,
-    hint: 'Preferred for opportunities',
-  },
-  {
-    label: 'GitHub Profile',
-    value: 'github.com/anas20023',
-    href: profile.github,
-    Icon: GithubIcon,
-    hint: 'Repositories & code samples',
-  },
-  {
-    label: 'LinkedIn',
-    value: 'linkedin.com/in/anasibelal004',
-    href: profile.linkedin,
-    Icon: LinkedinIcon,
-    hint: 'Professional network',
-  },
-  {
-    label: 'Base Location',
-    value: profile.location,
-    href: undefined,
-    Icon: MapPin,
-    hint: 'Available remotely or hybrid',
-  },
-];
 
 function ContactField({
   control,
@@ -106,8 +76,40 @@ function ContactField({
   );
 }
 
-export function Contact() {
+export function Contact({ profile = staticProfile }: { profile?: Profile }) {
+  const contactItems = [
+    {
+      label: 'Direct Email',
+      value: profile.email,
+      href: `mailto:${profile.email}`,
+      Icon: Mail,
+      hint: 'Preferred for opportunities',
+    },
+    {
+      label: 'GitHub Profile',
+      value: profile.github.replace('https://', ''),
+      href: profile.github,
+      Icon: GithubIcon,
+      hint: 'Repositories & code samples',
+    },
+    {
+      label: 'LinkedIn',
+      value: profile.linkedin.replace('https://', ''),
+      href: profile.linkedin,
+      Icon: LinkedinIcon,
+      hint: 'Professional network',
+    },
+    {
+      label: 'Base Location',
+      value: profile.location,
+      href: undefined,
+      Icon: MapPin,
+      hint: 'Available remotely or hybrid',
+    },
+  ];
+
   const [submitted, setSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const {
     control,
     handleSubmit,
@@ -118,11 +120,24 @@ export function Contact() {
     defaultValues: { name: '', email: '', subject: '', message: '' },
   });
 
-  const onSubmit = async (_data: FormValues) => {
-    await new Promise((r) => setTimeout(r, 700));
-    setSubmitted(true);
-    reset();
-    setTimeout(() => setSubmitted(false), 4000);
+  const onSubmit = async (data: FormValues) => {
+    setErrorMsg(null);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const result = await res.json();
+      if (!res.ok) {
+        throw new Error(result.message || 'Failed to send message');
+      }
+      setSubmitted(true);
+      reset();
+      setTimeout(() => setSubmitted(false), 5000);
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Something went wrong. Please try again.');
+    }
   };
 
   return (
@@ -236,9 +251,12 @@ export function Contact() {
                   Message sent. I will get back to you shortly!
                 </motion.p>
               )}
+              {errorMsg && (
+                <p className="text-xs font-medium text-rose-500">{errorMsg}</p>
+              )}
             </div>
             <p className="mt-4 text-[11px] text-muted">
-              Demo message box — or email me directly at {profile.email}.
+              Inquiries are tracked in CRM — or email me directly at {profile.email}.
             </p>
           </form>
         </div>
