@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { uploadToCloudinary } from '@/lib/cloudinary';
+import { uploadToImageKit } from '@/lib/imagekit';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 
@@ -20,19 +20,14 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'No file provided' }, { status: 400 });
     }
 
-    const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
-    const base64Data = `data:${file.type};base64,${buffer.toString('base64')}`;
-
-    const uploaded = await uploadToCloudinary(base64Data, 'portfolio/projects');
+    const uploaded = await uploadToImageKit(file, file.name || 'upload.jpg', '/portfolio/projects');
 
     return NextResponse.json({ success: true, url: uploaded.url });
   } catch (error: any) {
-    console.error('Cloudinary upload error:', error);
+    console.error('ImageKit upload error:', error);
     return NextResponse.json(
-      { error: error.message || 'Image upload failed. Ensure Cloudinary credentials are set.' },
+      { error: error.message || 'Image upload failed. Ensure ImageKit credentials are set.' },
       { status: 500 }
     );
   }
 }
-

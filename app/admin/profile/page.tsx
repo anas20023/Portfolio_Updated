@@ -88,7 +88,7 @@ export default function AdminProfilePage() {
       if (!res.ok) throw new Error(result.error || 'Upload failed');
       setForm((prev) => ({ ...prev, image: result.url }));
     } catch (err: any) {
-      alert(err.message || 'Cloudinary upload failed.');
+      alert(err.message || 'ImageKit upload failed.');
     } finally {
       setUploading(false);
     }
