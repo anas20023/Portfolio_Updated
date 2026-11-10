@@ -243,7 +243,8 @@ export default function AdminProfilePage() {
               <img
                 src={form.image}
                 alt="Profile Avatar"
-                className="h-14 w-14 rounded-full object-cover border border-border"
+                className="h-14 w-14 shrink-0 rounded-full object-cover border border-border"
+                style={{ objectFit: 'cover' }}
               />
             )}
             <input

@@ -5,7 +5,7 @@ import { profile as staticProfile } from '@/data/profile';
 import { skills as staticSkills } from '@/data/projects';
 import { services as staticServices } from '@/data/extras';
 import type { Profile, SkillGroup, Service } from '@/data/types';
-import { Icon } from '@/components/shared/Icon';
+import { Icon, TechIcon } from '@/components/shared/Icon';
 import {
   Code2,
   Server,
@@ -150,9 +150,10 @@ export function About({
                       {group.items.map((item) => (
                         <span
                           key={item}
-                          className="rounded-md border border-border bg-background/60 px-2.5 py-1 text-xs font-medium text-foreground/90 transition-colors hover:border-accent/50 hover:text-accent"
+                          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/60 px-2.5 py-1 text-xs font-medium text-foreground/90 transition-colors hover:border-accent/50 hover:text-accent"
                         >
-                          {item}
+                          <TechIcon name={item} className="h-3 w-3 shrink-0 text-accent" />
+                          <span>{item}</span>
                         </span>
                       ))}
                     </div>

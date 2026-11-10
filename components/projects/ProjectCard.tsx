@@ -5,8 +5,10 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { ArrowUpRight, ExternalLink, ArrowRight, Layers } from 'lucide-react';
 import { GithubIcon } from '@/components/shared/BrandIcons';
+import { TechIcon } from '@/components/shared/Icon';
 import type { Project } from '@/data/types';
 import { Tag } from '@/components/shared/Tag';
+import { stripMarkdown } from '@/lib/markdown';
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
@@ -18,6 +20,7 @@ export function ProjectCard({ project }: { project: Project }) {
           fill
           sizes="(min-width: 1024px) 560px, 100vw"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
+          style={{ objectFit: 'cover', objectPosition: 'center' }}
         />
         <div className="absolute inset-0 bg-linear-to-t from-surface via-surface/10 to-transparent" />
         <div className="absolute left-3.5 top-3.5 flex flex-wrap gap-1.5">
@@ -69,16 +72,17 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
 
         <p className="mt-2.5 flex-1 text-sm leading-relaxed text-muted line-clamp-3">
-          {project.summary}
+          {stripMarkdown(project.summary)}
         </p>
 
         <div className="mt-4 flex flex-wrap gap-1.5">
           {project.techStack.slice(0, 5).map((tech) => (
             <span
               key={tech}
-              className="rounded-md border border-border bg-background/60 px-2 py-0.5 font-mono text-[11px] text-muted"
+              className="inline-flex items-center gap-1 rounded-md border border-border bg-background/60 px-2 py-0.5 font-mono text-[11px] text-muted"
             >
-              {tech}
+              <TechIcon name={tech} className="h-3 w-3 shrink-0 text-accent/80" />
+              <span>{tech}</span>
             </span>
           ))}
           {project.techStack.length > 5 && (
@@ -143,8 +147,8 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
         {/* Featured Marquee Highlight (Primary Project) */}
         {primary && (
           <div className="mb-10 overflow-hidden rounded-2xl border border-border bg-surface shadow-xs transition-all duration-300 hover:border-accent/40">
-            <div className="grid lg:grid-cols-[1.1fr_0.9fr]">
-              <div className="relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-default">
+            <div className="grid lg:grid-cols-[1.15fr_0.85fr] items-center">
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-default">
                 <Image
                   src={primary.thumbnail}
                   alt={primary.title}
@@ -152,6 +156,7 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                   priority
                   sizes="(min-width: 1024px) 680px, 100vw"
                   className="object-cover"
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
                 />
                 <div className="absolute inset-0 bg-linear-to-r from-transparent to-surface/40 hidden lg:block" />
               </div>
@@ -172,17 +177,18 @@ export function ProjectsSection({ projects }: { projects: Project[] }) {
                     </Link>
                   </h3>
 
-                  <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted">
-                    {primary.summary}
+                  <p className="mt-4 text-sm sm:text-base leading-relaxed text-muted line-clamp-3">
+                    {stripMarkdown(primary.summary)}
                   </p>
 
                   <div className="mt-6 flex flex-wrap gap-1.5">
                     {primary.techStack.map((tech) => (
                       <span
                         key={tech}
-                        className="rounded-md border border-border bg-background/60 px-2.5 py-1 font-mono text-xs text-muted"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background/60 px-2.5 py-1 font-mono text-xs text-muted"
                       >
-                        {tech}
+                        <TechIcon name={tech} className="h-3.5 w-3.5 shrink-0 text-accent/80" />
+                        <span>{tech}</span>
                       </span>
                     ))}
                   </div>

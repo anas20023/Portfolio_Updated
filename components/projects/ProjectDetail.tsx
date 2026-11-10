@@ -15,11 +15,12 @@ import {
   Target,
 } from 'lucide-react';
 import { GithubIcon } from '@/components/shared/BrandIcons';
+import { TechIcon } from '@/components/shared/Icon';
 import type { Project } from '@/data/types';
 import { Tag } from '@/components/shared/Tag';
 import { ProjectCard } from '@/components/projects/ProjectCard';
 import { Reveal } from '@/components/layout/Section';
-import { marked } from 'marked';
+import { renderMarkdown, stripMarkdown } from '@/lib/markdown';
 
 export function ProjectDetail({
   project,
@@ -64,10 +65,9 @@ export function ProjectDetail({
               <h1 className="mt-4 text-4xl font-bold leading-tight tracking-tight text-foreground sm:text-5xl">
                 {project.title}
               </h1>
-              <div
-                className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg prose prose-sm dark:prose-invert [&_a]:text-accent [&_a]:underline [&_strong]:text-foreground"
-                dangerouslySetInnerHTML={{ __html: marked.parse(project.summary || '', { async: false }) as string }}
-              />
+              <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg line-clamp-3">
+                {stripMarkdown(project.summary)}
+              </p>
 
               <dl className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
                 <div className="rounded-xl border border-border bg-surface p-4">
@@ -132,14 +132,15 @@ export function ProjectDetail({
               className="relative"
             >
               <div className="absolute -inset-3 -z-10 rounded-3xl bg-accent/10 blur-2xl" />
-              <div className="relative aspect-[4/3] overflow-hidden rounded-2xl border border-border bg-surface p-2">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-border bg-surface">
                 <Image
                   src={project.coverImage}
                   alt={project.title}
                   fill
                   priority
                   sizes="(min-width: 1024px) 560px, 100vw"
-                  className="rounded-xl object-cover"
+                  className="object-cover"
+                  style={{ objectFit: 'cover', objectPosition: 'center' }}
                 />
               </div>
             </motion.div>
@@ -160,9 +161,10 @@ export function ProjectDetail({
                   Overview
                 </h2>
               </div>
-              <p className="mt-4 max-w-3xl text-base leading-relaxed text-muted">
-                {project.summary}
-              </p>
+              <div
+                className="mt-4 max-w-3xl text-base leading-relaxed text-muted prose prose-neutral dark:prose-invert [&_a]:text-accent [&_a]:underline"
+                dangerouslySetInnerHTML={{ __html: renderMarkdown(project.summary || '') }}
+              />
             </div>
           </Reveal>
         </div>
@@ -181,9 +183,10 @@ export function ProjectDetail({
               {project.techStack.map((t) => (
                 <span
                   key={t}
-                  className="rounded-lg border border-border bg-surface px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:border-accent/40 hover:text-foreground"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:border-accent/40 hover:text-foreground"
                 >
-                  {t}
+                  <TechIcon name={t} className="h-4 w-4 shrink-0 text-accent" />
+                  <span>{t}</span>
                 </span>
               ))}
             </div>
@@ -202,13 +205,14 @@ export function ProjectDetail({
           <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {project.gallery.map((src, i) => (
               <Reveal key={src + i} delay={i * 0.05}>
-                <div className="group relative aspect-[4/3] overflow-hidden rounded-xl border border-border bg-surface">
+                <div className="group relative aspect-[16/10] overflow-hidden rounded-xl border border-border bg-surface">
                   <Image
                     src={src}
                     alt={`${project.title} screenshot ${i + 1}`}
                     fill
                     sizes="(min-width: 1024px) 380px, 100vw"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    style={{ objectFit: 'cover', objectPosition: 'center' }}
                   />
                 </div>
               </Reveal>

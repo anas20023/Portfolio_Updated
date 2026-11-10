@@ -182,7 +182,8 @@ export function Hero({ profile = staticProfile }: { profile?: Profile }) {
                     fill
                     priority
                     sizes="(min-width: 1024px) 400px, (min-width: 640px) 380px, 100vw"
-                    className="object-cover object-[center_18%]"
+                    className="object-cover"
+                    style={{ objectFit: 'cover', objectPosition: 'center 15%' }}
                   />
                 </div>
 

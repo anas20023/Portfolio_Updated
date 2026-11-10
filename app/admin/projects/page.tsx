@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { MarkdownEditor } from '@/components/admin/MarkdownEditor';
+import { stripMarkdown } from '@/lib/markdown';
 
 interface Project {
   _id: string;
@@ -269,6 +270,7 @@ export default function AdminProjectsPage() {
                       src={proj.thumbnail}
                       alt={proj.title}
                       className="h-full w-full object-cover"
+                      style={{ objectFit: 'cover' }}
                     />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center text-xs text-muted">
@@ -306,7 +308,7 @@ export default function AdminProjectsPage() {
                   </div>
 
                   <h3 className="font-bold text-foreground text-sm line-clamp-1">{proj.title}</h3>
-                  <p className="text-xs text-muted line-clamp-2">{proj.summary}</p>
+                  <p className="text-xs text-muted line-clamp-2">{stripMarkdown(proj.summary)}</p>
 
                   <div className="flex flex-wrap gap-1 pt-1">
                     {proj.techStack?.slice(0, 4).map((tech) => (
@@ -445,10 +447,10 @@ export default function AdminProjectsPage() {
               </div>
 
               <MarkdownEditor
-                label="Project Description / Summary (Markdown Supported) *"
+                label="Project Description (Markdown or Normal Text) *"
                 value={form.summary}
                 onChange={(val) => setForm({ ...form, summary: val })}
-                placeholder="Write description with rich formatting, bold, bullet points, links, etc..."
+                placeholder="Write in normal text or format with markdown (headings, bold, lists, links)..."
                 rows={4}
               />
 
@@ -494,6 +496,16 @@ export default function AdminProjectsPage() {
                     />
                   </label>
                 </div>
+                {form.thumbnail && (
+                  <div className="mt-2 relative h-28 w-full rounded-lg overflow-hidden border border-border bg-surface-raised">
+                    <img
+                      src={form.thumbnail}
+                      alt="Thumbnail preview"
+                      className="h-full w-full object-cover"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  </div>
+                )}
               </div>
 
               <div className="grid grid-cols-2 gap-3">

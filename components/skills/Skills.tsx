@@ -1,6 +1,6 @@
 import { Section, Reveal } from '@/components/layout/Section';
 import { skills } from '@/data/projects';
-import { Icon } from '@/components/shared/Icon';
+import { Icon, TechIcon } from '@/components/shared/Icon';
 
 export function Skills() {
   return (
@@ -26,9 +26,10 @@ export function Skills() {
                 {group.items.map((skill) => (
                   <span
                     key={skill}
-                    className="rounded-lg border border-border bg-background/50 px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:border-accent/40 hover:text-foreground"
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-background/50 px-3 py-1.5 text-sm font-medium text-muted transition-colors hover:border-accent/40 hover:text-foreground"
                   >
-                    {skill}
+                    <TechIcon name={skill} className="h-4 w-4 shrink-0 text-accent" />
+                    <span>{skill}</span>
                   </span>
                 ))}
               </div>

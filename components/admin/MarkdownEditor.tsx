@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { marked } from 'marked';
+import { renderMarkdown } from '@/lib/markdown';
 import {
   Bold,
   Italic,
@@ -54,7 +54,7 @@ export function MarkdownEditor({
     }, 0);
   };
 
-  const previewHtml = marked.parse(value || '', { async: false }) as string;
+  const previewHtml = renderMarkdown(value || '');
 
   return (
     <div className="flex flex-col gap-1.5 w-full">
@@ -172,7 +172,7 @@ export function MarkdownEditor({
           />
         ) : (
           <div
-            className="prose prose-sm dark:prose-invert max-w-none p-3 text-xs text-foreground min-h-[100px] max-h-[300px] overflow-y-auto leading-relaxed [&_h3]:font-bold [&_h3]:text-sm [&_h3]:mt-2 [&_h3]:mb-1 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-3 [&_blockquote]:italic [&_code]:bg-surface-raised [&_code]:px-1 [&_code]:rounded [&_a]:text-accent [&_a]:underline"
+            className="prose prose-sm dark:prose-invert max-w-none p-3 text-xs text-foreground min-h-[100px] max-h-[300px] overflow-y-auto leading-relaxed break-words [&_h3]:font-bold [&_h3]:text-sm [&_h3]:mt-2 [&_h3]:mb-1 [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_blockquote]:border-l-2 [&_blockquote]:border-accent [&_blockquote]:pl-3 [&_blockquote]:italic [&_code]:bg-surface-raised [&_code]:px-1 [&_code]:rounded [&_a]:text-accent [&_a]:underline"
             dangerouslySetInnerHTML={{ __html: previewHtml || '<p class="text-muted italic">Nothing to preview</p>' }}
           />
         )}
